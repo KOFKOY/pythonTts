@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  tts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-tts
+    restart: unless-stopped
+    environment:
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "19011:8000"
+    command: ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
