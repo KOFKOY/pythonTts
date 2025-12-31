@@ -17,7 +17,7 @@ from tenacity import retry, wait_exponential, stop_after_attempt
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-#session = requests.Session()
+session = requests.Session()
 
 
 # 常量定义
@@ -34,8 +34,7 @@ DEFAULT_RATE = "0"
 DEFAULT_PITCH = "0"
 # audio-24khz-48kbitrate-mono-mp3
 # audio-16khz-32kbitrate-mono-mp3
-# audio-16khz-16kbitrate-mono-mp3
-DEFAULT_OUTPUT_FORMAT = "audio-16khz-16kbitrate-mono-mp3"
+DEFAULT_OUTPUT_FORMAT = "audio-16khz-32kbitrate-mono-mp3"
 DEFAULT_STYLE = "general"
 
 endpoint = None
@@ -76,7 +75,7 @@ def get_endpoint(proxies=None):
         "Accept-Encoding": "gzip",
     }
 
-    response = requests.post(ENDPOINT_URL, headers=headers, proxies=proxies, timeout=10)
+    response = session.post(ENDPOINT_URL, headers=headers, proxies=proxies, timeout=10)
     response.raise_for_status()
     return response.json()
 
@@ -142,7 +141,7 @@ def get_voice(
 
     ssml = get_ssml(text, voice_name, rate, pitch, style)
 
-    response = requests.post(url, headers=headers, data=ssml.encode("utf-8"), proxies=proxies, timeout=30)
+    response = session.post(url, headers=headers, data=ssml.encode("utf-8"), proxies=proxies, timeout=30)
     response.raise_for_status()
     return response.content
 
@@ -163,7 +162,7 @@ def get_voice_list():
     }
 
     try:
-        response = requests.get(VOICES_LIST_URL, headers=headers, timeout=10)
+        response = session.get(VOICES_LIST_URL, headers=headers, timeout=10)
         response.raise_for_status()
         result = response.json()
         voice_list_cache = result
