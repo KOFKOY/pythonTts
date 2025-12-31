@@ -225,10 +225,10 @@ def get_voice(
         decoded_jwt = json.loads(base64.b64decode(jwt + padding).decode('utf-8'))
         expired_at = decoded_jwt['exp']
         seconds_left = expired_at - current_time
-        logger.info(f"刷新 token，剩余有效期 {seconds_left} 秒")
+        # logger.info(f"刷新 token，剩余有效期 {seconds_left} 秒")
     else:
         seconds_left = expired_at - current_time
-        logger.info(f"沿用 token，剩余有效期 {seconds_left} 秒")
+        # logger.info(f"沿用 token，剩余有效期 {seconds_left} 秒")
 
     voice_name = voice_name or DEFAULT_VOICE_NAME
     rate = rate or DEFAULT_RATE
